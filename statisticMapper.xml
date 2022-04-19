@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.devfun.settingweb_boot.dao.StatisticMapper">
+ 
+    <select id="selectLoginAvg" parameterType="string" resultType="hashMap">
+        with `login` as (
+        select userID as userID,
+        	   substr(createDate, 1, 6) as loginDate
+        from statistc.requestInfo where requestCode = 'L'
+        )
+        select avg(loginCnt.loginCount) as 하루평균로그인횟수
+        from(select loginDate as loginDate,
+                     count(distinct userID) as loginCount
+              from `login`
+              group by loginDate) as loginCnt;
+ 
+    </select>
+    
+</mapper>
